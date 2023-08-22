@@ -1,0 +1,41 @@
+MODULE main
+	VAR
+		flag : array 0..1 of boolean;
+		turnOFprocess : {0,1};
+		pr0 : process proc(turnOFprocess, flag, 0); pr1 : process proc(turnOFprocess, flag, 1);
+	ASSIGN
+		init(flag[0]) := FALSE;
+		init(flag[1]) := FALSE;
+		init(turnOFprocess) := 1;
+
+MODULE proc(turnOFprocess,flag, i)
+	VAR
+		state : {NONcs, check_others, check_turn, waiting, CS};
+	DEFINE
+		j := case
+			i = 0 : 1;
+			i = 1 : 0;
+		esac;
+ASSIGN
+	init(state) := NONcs;
+	next(state) := case
+		state = NONcs : {NONcs, check_others};
+		state = check_others & (flag[j] = FALSE) : CS;
+		state = check_others & (flag[j] = TRUE) : check_turn;
+		state = check_turn & (turnOFprocess = j) : waiting;
+		state = check_turn & (turnOFprocess != j) : check_others;
+		state = waiting & (turnOFprocess = j) : waiting;
+		state = waiting & (turnOFprocess !=j) : check_others;
+		state = CS : {CS, NONcs};
+		TRUE: state;
+	esac;
+	next(flag[i]) := case
+		state = NONcs & next(state) = check_others : TRUE;
+		state = waiting & (turnOFprocess != j) : TRUE;
+		state = CS & next(state) = NONcs : FALSE;
+		TRUE: flag[i];
+	esac;
+	next(turnOFprocess) := case
+		state = CS & next(state) = NONcs : j;
+		TRUE: turnOFprocess;
+	esac;

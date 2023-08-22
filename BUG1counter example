@@ -1,0 +1,47 @@
+Trace Description: LTL Counterexample 
+Trace Type: Counterexample 
+  -> State: 1.1 <-
+    flag[0] = FALSE
+    flag[1] = FALSE
+    turnOFprocess = 1
+    pr0.state = NONcs
+    pr1.state = NONcs
+    pr0.j = 1
+    pr1.j = 0
+  -> Input: 1.2 <-
+    _process_selector_ = pr1
+    running = FALSE
+    pr1.running = TRUE
+    pr0.running = FALSE
+  -> State: 1.2 <-
+    flag[1] = TRUE
+    pr1.state = check_others
+  -> Input: 1.3 <-
+  -> State: 1.3 <-
+    pr1.state = CS
+  -> Input: 1.4 <-
+    _process_selector_ = pr0
+    pr1.running = FALSE
+    pr0.running = TRUE
+  -> State: 1.4 <-
+    flag[0] = TRUE
+    pr0.state = check_others
+  -> Input: 1.5 <-
+    _process_selector_ = pr1
+    pr1.running = TRUE
+    pr0.running = FALSE
+  -> State: 1.5 <-
+    flag[1] = FALSE
+    turnOFprocess = 0
+    pr1.state = NONcs
+  -> Input: 1.6 <-
+  -- Loop starts here
+  -> State: 1.6 <-
+    flag[1] = TRUE
+    pr1.state = check_others
+  -> Input: 1.7 <-
+    _process_selector_ = main
+    running = TRUE
+    pr1.running = FALSE
+  -> State: 1.7 <-
+
